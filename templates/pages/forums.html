@@ -1,0 +1,21 @@
+{% extends 'layouts/main.html' %}
+{% block title %} AcadeMe | Forums{% endblock %}
+{% block content %}
+{% for area in areas %}
+<h3>{{ area.topic }}</h3>
+	<ul class="items">
+		{% for forum in area.forums %}
+		<li>
+			<a href="/forums/{{ forum.id }}">
+				<i class="fas fa-telegram"></i>
+				<div class="item">
+					<h4>{{ forum.title }}</h4>
+					<h5>{{ forum.description }}</h5>
+			
+				</div>
+			</a>
+		</li>
+		{% endfor %}
+	</ul>
+{% endfor %}
+{% endblock %}
