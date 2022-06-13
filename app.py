@@ -17,9 +17,15 @@ from logging import Formatter, FileHandler
 from flask_wtf import Form
 from forms import *
 from flask_migrate import Migrate
+import os
+import psycopg2
 # from requests import delete
 # from sqlalchemy.orm import sessionmaker
 # from sqlalchemy import create_engine
+
+# engine = create_engine('postgresql://jennyhuang@127.0.0.1:5432/Academe')
+
+
 #----------------------------------------------------------------------------#
 # App Config.
 #----------------------------------------------------------------------------#
@@ -28,6 +34,8 @@ app = Flask(__name__)
 moment = Moment(app)
 app.config.from_object('config')
 db = SQLAlchemy(app)
+
+
 
 # DONE: connect to a local postgresql database
 migrate = Migrate(app, db)
@@ -38,7 +46,7 @@ migrate = Migrate(app, db)
 #----------------------------------------------------------------------------#
 # Model generate by SQLAlchemy (db.create_all()) DONE, so no need to write sql commands to generate te tables.
 
-      
+
 
 class Forum(db.Model):
     __tablename__ = 'Forum'
@@ -47,7 +55,7 @@ class Forum(db.Model):
     title = db.Column(db.String)
     look_for_counselor = db.Column(db.Boolean) # checkbox
     description = db.Column(db.String(500))
-    listeners = db.Column(db.String, db.ForeignKey('listener.id'), nullable=False)
+    listeners = db.Column(db.Integer, db.ForeignKey('Listener.id'), nullable=False)
     # TODO: QA.
    
 
@@ -69,7 +77,7 @@ class Listener(db.Model):
 
 
 
-db.create_all()
+# db.create_all()
 #----------------------------------------------------------------------------#
 # Filters.
 #----------------------------------------------------------------------------#
@@ -102,33 +110,30 @@ def homepage():
 #  ----------------------------------------------------------------
 @app.route('/forum')
 def forum():
-    fake_data=[
-      {
-    "topic": "Anxiety",  
-    "forums": [{
-      "id": 1,
-      "title": "Fear to fail the exam",
-      "description": "The algorithm course is too hard for me. I am anxious about the exam. Is anyone here can help me. Maybe We can form a study group. ",
-    }]
-    }, 
-    {
-    "topic": "Lonliness",
-     "forums": [{
-      "id": 2,
-      "title": "Want to make new friends",
-      "description": "I am new to New York and want to meet new people with same interest.",
-    }]
-    }, 
-    {
-    "topic": "Relationship",
-     "forums": [{
-      "id": 3,
-      "title": "Just break up",
-      "description": "Heartbroken",
-    }]
-    }
-    ]
-    return render_template('pages/forums.html', areas=fake_data)
+  forum = Forum.query.order_by(Forum.topic).all()
+  # print("forum",forum)
+  topic_list = {}
+  for i, Forum in enumerate(forum):
+        topic_list[Forum.topic] = Forum.query.filter_by(topic = Forum.topic).all()
+  # print(topic_list)
+  
+  data_list = []
+  
+  for topic, Forums_topic in topic_list.items():
+      data_dict = {}
+      data_dict["topic"] = topic
+      Forums_list = [] #init, empty the list
+      for Forum_topic in Forums_topic:
+        Forum_dict = {} #init, empty the dict
+        Forum_dict["id"] =  Forum_topic.id
+        Forum_dict["name"] =  Forum_topic.name
+        Forums_list.append(Forum_dict)
+      data_dict["forum"] = Forums_list
+      # print("data_dict",data_dict)
+      # print("topic",topic)
+      data_list.append(data_dict)
+  # print("data_list",data_list)
+  return render_template('pages/forum.html', areas=data_list);
 
 @app.route('/forum/search', methods=['POST'])
 def search_Forums():
@@ -704,11 +709,12 @@ if not app.debug:
 
 # # Default port:
 if __name__ == '__main__':
-    app.run()
+    # app.run()
 
 # Or specify port manually:
 
 # if __name__ == '__main__':
-#     port = int(os.environ.get('PORT', 8080))
-#     app.run(host='0.0.0.0', port=port)
+    # conn = psycopg2.connect("dbname=postgres user=postgres password=postgres")
+    port = int(os.environ.get('PORT', 8080))
+    app.run(host='127.0.0.1', port=port)
 
