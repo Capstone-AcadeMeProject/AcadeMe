@@ -1,9 +1,9 @@
-FROM python:3.9
+FROM python:3.9.1
 
-ENV PORT 80
+ENV PORT 8080
 ENV HOST 0.0.0.0
 
-EXPOSE 80
+EXPOSE 8080
 
 RUN apt-get update -y && \
     apt-get install -y python3-pip
@@ -16,4 +16,4 @@ RUN pip install -r requirements.txt
 
 COPY . /app
 
-ENTRYPOINT ["python", "app2.py"]
+ENTRYPOINT ["python", "app.py"]
