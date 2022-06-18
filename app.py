@@ -7,7 +7,9 @@ import json
 import re
 import dateutil.parser
 import babel
-from flask import Flask, render_template, request, Response, flash, redirect, url_for
+from flask import Flask, render_template, request, Response, flash, redirect, url_for, session
+from flask_socketio import SocketIO, join_room, leave_room, emit
+from flask_session import Session
 from flask.globals import session
 from flask_moment import Moment
 from flask_sqlalchemy import SQLAlchemy
@@ -35,7 +37,9 @@ moment = Moment(app)
 app.config.from_object('config')
 db = SQLAlchemy(app)
 
+Session(app)
 
+socketio = SocketIO(app, manage_session=False)
 
 # DONE: connect to a local postgresql database
 migrate = Migrate(app, db)
@@ -684,6 +688,36 @@ def create_show_submission():
     db.session.rollback()  
   return render_template('pages/home.html')
 
+#  chat
+#  ----------------------------------------------------------------
+@app.route('/chat', methods = ['GET','POST'])
+def chat():
+  session['username'] = 'test_username'
+  session['room'] = 'test_room'
+  return render_template('pages/chat.html', session = session)
+
+@socketio.on('join', namespace='/chat')
+def join(message):
+    room = session.get('room')
+    join_room(room)
+    emit('status', {'msg':  session.get('username') + ' has entered the room.'}, room=room)
+
+
+@socketio.on('text', namespace='/chat')
+def text(message):
+    room = session.get('room')
+    emit('message', {'msg': session.get('username') + ' : ' + message['msg']}, room=room)
+
+
+@socketio.on('left', namespace='/chat')
+def left(message):
+    room = session.get('room')
+    username = session.get('username')
+    leave_room(room)
+    session.clear()
+    emit('status', {'msg': username + ' has left the room.'}, room=room)
+
+
 @app.errorhandler(404)
 def not_found_error(error):
     return render_template('errors/404.html'), 404
@@ -709,12 +743,12 @@ if not app.debug:
 
 # # Default port:
 if __name__ == '__main__':
-    # app.run()
+    socketio.run(app)
 
 # Or specify port manually:
 
 # if __name__ == '__main__':
     # conn = psycopg2.connect("dbname=postgres user=postgres password=postgres")
-    port = int(os.environ.get('PORT', 8080))
-    app.run(host='127.0.0.1', port=port)
+    #port = int(os.environ.get('PORT', 8080))
+    #app.run(host='127.0.0.1', port=port)
 

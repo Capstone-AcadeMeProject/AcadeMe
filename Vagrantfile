@@ -11,9 +11,9 @@ Vagrant.configure("2") do |config|
   # config.vm.box_version = "20200206.0.0"
   config.vm.hostname = "ubuntu"
 
-  config.vm.network "forwarded_port", guest: 80, host: 8080, host_ip: "127.0.0.1"
+  config.vm.network "forwarded_port", guest: 3000, host: 3000, host_ip: "127.0.0.1"
   # reference: https://www.virtualbox.org/manual/ch06.html#network_hostonly
-  config.vm.network "private_network", ip: "192.168.56.0"
+  # config.vm.network "private_network", ip: "192.168.56.0"
 
   ############################################################
   # Provider for VirtualBox
@@ -91,7 +91,7 @@ Vagrant.configure("2") do |config|
     sudo apt-get install -y apache2
     rm -rf /var/www/html
     #create symbolic link for home page
-    ln -s /vagrant/templates/pages/ /var/www/html
+    ln -s /vagrant/templates /var/www/html
     
     # Prepare postgres data share
     sudo mkdir -p /var/lib/postgresql/data
