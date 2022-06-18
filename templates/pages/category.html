@@ -1,0 +1,87 @@
+{% extends 'layouts/main.html' %}
+{% block title %}AcadeMe{% endblock %}
+{% block content %}
+<!--<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">-->
+<div class="row">
+	<div class="col-sm-6">
+		<h1>AcadeMe ❤️</h1>
+		<p class="lead">Make wellness treatment more accessible. </p>
+		<!--<p class="lead"> We would be there for you!</p>-->
+
+
+		<div class="d-inline p-2 bg-warning text-white " >
+		 Don't know what you feel? 
+		 You could make a 
+		<button type="button" class="btn btn-warning">self accessment</button>
+		to better understand your emotion right now. </div> 
+
+		 <br>
+
+		<div class="row">
+			<div class="col-sm-6">
+			  <div class="card">
+				<div class="card-body">
+				  <h5 class="card-title">Anxiety</h5>
+				 <!-- <p class="card-text">feel worry in the mind</p>-->
+				 <img src="{{ url_for('static',filename='img/anxiety.png') }}" class="img-responsive">
+				  <a href="/supports" class="btn btn-primary">Instant help</a>
+				</div>
+			  </div>
+			</div>
+			<div class="col-sm-6 col-xs-8">
+			  <div class="card">
+				<div class="card-body">
+				  <h5 class="card-title">Loneliness</h5>
+				  <img src="{{ url_for('static',filename='img/lonely.png') }}" class="img-responsive">
+				  <a href="/supports" class="btn btn-primary">Instant help</a>
+				</div>
+			  </div>
+			</div>
+		  </div>
+
+		  <br>
+		  <div class="row">
+			<div class="col-sm-6">
+			  <div class="card">
+				<div class="card-body">
+				  <h5 class="card-title">Stress</h5>
+				  <img src="{{ url_for('static',filename='img/stress.jpeg') }}" class="img-responsive">
+				  <a href="/supports" class="btn btn-primary">Instant help</a>
+				</div>
+			  </div>
+			</div>
+			<div class="col-sm-6">
+			<!--<div class="col-sm-5 col-xs-6">-->
+			  <div class="card">
+				<div class="card-body">
+				  <h5 class="card-title">Relationship</h5>
+				  <img src="{{ url_for('static',filename='img/relationship2.png') }}" class="img-responsive">
+				  <a href="/supports" class="btn btn-primary">Instant help</a>
+				</div>
+			  </div>
+			</div>
+		  </div>
+		  <br>
+		  
+
+		  <div class="col-sm-6" >
+			<div class="card">
+			  <h5 class="card-title"> Still do not know what I feel/ situation not listed, but I wanna find someone to help me</h5>
+			  <img src="{{ url_for('static',filename='img/others.png') }}" class="img-responsive">
+			  <a href="/supports" class="btn btn-primary">Instant help</a>
+			</div>
+		  </div>
+
+	</div>
+	<div class="col-sm-6 hidden-sm hidden-xs">
+
+		<img id="front-splash" src="{{ url_for('static',filename='img/phone_therapy.jpeg') }}" alt="Front Photo" />
+		<!-- <div class="d-inline p-3 bg-warning text-white " >
+			Don't know what you feel? 
+			You could make a 
+		   <button type="button" class="btn btn-warning">self accessment</button>
+		   to better understand your emotion right now. </div>
+		</div> -->
+	<br>
+</div>
+{% endblock %}

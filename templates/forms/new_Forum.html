@@ -1,0 +1,34 @@
+{% extends 'layouts/main.html' %}
+{% block title %}New Topic{% endblock %}
+{% block content %}
+  <div class="form-wrapper">
+    <form method="post" class="form" action="/forums/create">
+      <h3 class="form-heading">Release your topic <a href="{{ url_for('index') }}" title="Back to homepage"><i class="fa fa-home pull-right"></i></a></h3>
+      <div class="form-group">
+        <label for="name">Title</label>
+        {{ form.name(class_ = 'form-control', autofocus = true) }}
+      </div>
+     
+      <div class="form-group">
+        <label for="genres">Topics</label>
+        <small>Ctrl+Click to select multiple</small>
+        {{ form.genres(class_ = 'form-control', placeholder='Genres, separated by commas', autofocus = true) }}
+      </div>
+      
+      
+
+       <div class="form-group">
+            <label for="seeking_description">Description</label>
+            {{ form.seeking_description(class_ = 'form-control', placeholder='Description', autofocus = true) }}
+       </div>
+      
+      
+      <div class="form-group">
+        <label for="seeking_talent">Looking for a Therapy in furture</label>
+        {{ form.seeking_talent(placeholder='Forum', autofocus = true) }}
+      
+      <input type="submit" value="Create Topic" class="btn btn-primary btn-lg btn-block">
+  </div>
+    </form>
+  </div>
+{% endblock %}
