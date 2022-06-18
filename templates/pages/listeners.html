@@ -1,0 +1,16 @@
+{% extends 'layouts/main.html' %}
+{% block title %}AcadeMe | Listeners {% endblock %}
+{% block content %}
+<ul class="items">
+	{% for listener in listeners %}
+	<li>
+		<a href="/listeners/{{ listener.id }}">
+			<i class="fas fa-users"></i>
+			<div class="item">
+				<h5>{{ listener.name }}</h5>
+			</div>
+		</a>
+	</li>
+	{% endfor %}
+</ul>
+{% endblock %}

@@ -1,0 +1,75 @@
+{% extends 'layouts/main.html' %}
+{% block title %}{{ listener.name }} | Listener {% endblock %}
+{% block content %}
+<div class="row">
+	<div class="col-sm-6">
+		<h1 class="monospace">
+			{{ listener.name }}
+		</h1>
+		<p class="subtitle">
+			ID: {{ listener.id }}
+		</p>
+		<div class="genres">
+			{% for genre in listener.genres %}
+			<span class="genre">{{ genre }}</span>
+			{% endfor %}
+		</div>
+		<p>self introduction: 
+			<p>I specialize in evaluating children and adults who are struggling to succeed in school and at work. 
+			If you are hungry for personal growth and willing to work at it, the breakthrough you are seeking is within reach at Academe"。</p>
+		</p>
+		<br>
+		<p>trainning background:</p>
+			<br>
+		<p>Area that are good at: Stress</p>
+		<br>
+
+		<!-- <p>
+			<i class="fas fa-phone-alt"></i> {% if listener.phone %}{{ listener.phone }}{% else %}No Phone{% endif %}
+        </p>
+        <p>
+			<i class="fas fa-link"></i> {% if listener.website %}<a href="{{ listener.website }}" target="_blank">{{ listener.website }}</a>{% else %}No Website{% endif %}
+		</p>
+		 -->
+	
+	</div>
+	<div class="col-sm-6">
+		<img src="{{ url_for('static',filename='img/therapy-male.jpeg') }}" alt="Listener Image" />
+		<!-- <img src="{{ url_for('static',filename='img/therapy.jpeg') }}" alt="Listener Image" /> -->
+
+	</div>
+</div>
+<!-- <section>
+	<h2 class="monospace">{{ listener.upcoming_shows_count }} Upcoming {% if listener.upcoming_shows_count == 1 %}Appointment{% else %}Appointments{% endif %}</h2>
+	<div class="row">
+		{%for show in listener.upcoming_shows %}
+		<div class="col-sm-4">
+			<div class="tile tile-show">
+				<img src="{{ show.venue_image_link }}" alt="Show Venue Image" />
+				<h5><a href="/venues/{{ show.venue_id }}">{{ show.venue_name }}</a></h5>
+				<h6>{{ show.start_time|datetime('full') }}</h6>
+			</div>
+		</div>
+		{% endfor %}
+	</div>
+</section> -->
+<!-- <section>
+	<h2 class="monospace">{{ listener.past_shows_count }} Past {% if listener.past_shows_count == 1 %}Appointment{% else %}Appointments{% endif %}</h2>
+	<div class="row">
+		{%for show in listener.past_shows %}
+		<div class="col-sm-4">
+			<div class="tile tile-show">
+				<img src="{{ show.venue_image_link }}" alt="Show Venue Image" />
+				<h5><a href="/venues/{{ show.venue_id }}">{{ show.venue_name }}</a></h5>
+				<h6>{{ show.start_time|datetime('full') }}</h6>
+			</div>
+		</div>
+		{% endfor %}
+	</div>
+</section> -->
+
+
+<a href=" listeners/{{ listener.id }}/call"><button class="btn btn-primary btn-lg">Call</button></a>
+<a href=" listeners/{{ listener.id }}/call"><button class="btn btn-primary btn-lg">Text</button></a>
+{% endblock %}
+
