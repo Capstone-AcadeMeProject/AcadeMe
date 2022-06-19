@@ -609,8 +609,8 @@ def create_listener_submission():
 #  chat
 #  ----------------------------------------------------------------
 
-@app.route('/listeners/4/chat', methods = ['GET','POST'])
-def chat():
+@app.route('/listeners/<int:listener_id>/chat', methods = ['GET','POST'])
+def chat(listener_id):
   session['username'] = 'test_username'
   session['room'] = 'test_room'
   return render_template('pages/chat.html', session = session)
