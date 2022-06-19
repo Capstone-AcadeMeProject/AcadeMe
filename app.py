@@ -746,8 +746,8 @@ if __name__ == '__main__':
     port = int(os.environ.get('PORT', 8080))
     socketio.run(app,host='127.0.0.1', port=port)
 
-# Or specify port manually:
 
+# Or specify port manually:
 # if __name__ == '__main__':
     # conn = psycopg2.connect("dbname=postgres user=postgres password=postgres")
     #app.run(host='127.0.0.1', port=port)
