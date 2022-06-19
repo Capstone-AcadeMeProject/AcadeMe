@@ -17,7 +17,7 @@ DEBUG = True
 # Get configuration from environment when using vagrant
 DATABASE_URI = os.getenv(
     "DATABASE_URI",
-    "postgresql://postgres:postgres@127.0.0.1:5432/Fyyur"
+    "postgresql://postgres:postgres@127.0.0.1:5432/postgres"
 )
 
 # # Configure SQLAlchemy
