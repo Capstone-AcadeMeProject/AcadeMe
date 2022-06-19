@@ -5,6 +5,7 @@
 
 from datetime import date
 import json
+import os
 import re
 import dateutil.parser
 import babel
@@ -433,6 +434,12 @@ def show_listener(listener_id):
   # data = list(filter(lambda d: d['id'] == listener_id, data_list))[0]
   return render_template('pages/show_listener.html', listener=f_data1)
 
+
+
+
+
+
+
 #  Update
 #  ----------------------------------------------------------------
 @app.route('/listeners/<int:listener_id>/edit', methods=['GET'])
@@ -599,120 +606,29 @@ def create_listener_submission():
   return render_template('pages/home.html')
 
 
-#  Shows
-#  ----------------------------------------------------------------
-
-@app.route('/shows')
-def shows():
-  # displays list of shows at /shows
-  # DONE: replace with real forum data.
-  # data=[{
-  #   "Forum_id": 1,
-  #   "Forum_name": "The Musical Hop",
-  #   "listener_id": 4,
-  #   "listener_name": "Guns N Petals",
-  #   "listener_image_link": "https://images.unsplash.com/photo-1549213783-8284d0336c4f?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=300&q=80",
-  #   "start_time": "2019-05-21T21:30:00.000Z"
-  # }, {
-  #   "Forum_id": 3,
-  #   "Forum_name": "Park Square Live Music & Coffee",
-  #   "listener_id": 5,
-  #   "listener_name": "Matt Quevedo",
-  #   "listener_image_link": "https://images.unsplash.com/photo-1495223153807-b916f75de8c5?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=334&q=80",
-  #   "start_time": "2019-06-15T23:00:00.000Z"
-  # }, {
-  #   "Forum_id": 3,
-  #   "Forum_name": "Park Square Live Music & Coffee",
-  #   "listener_id": 6,
-  #   "listener_name": "The Wild Sax Band",
-  #   "listener_image_link": "https://images.unsplash.com/photo-1558369981-f9ca78462e61?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=794&q=80",
-  #   "start_time": "2035-04-01T20:00:00.000Z"
-  # }, {
-  #   "Forum_id": 3,
-  #   "Forum_name": "Park Square Live Music & Coffee",
-  #   "listener_id": 6,
-  #   "listener_name": "The Wild Sax Band",
-  #   "listener_image_link": "https://images.unsplash.com/photo-1558369981-f9ca78462e61?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=794&q=80",
-  #   "start_time": "2035-04-08T20:00:00.000Z"
-  # }, {
-  #   "Forum_id": 3,
-  #   "Forum_name": "Park Square Live Music & Coffee",
-  #   "listener_id": 6,
-  #   "listener_name": "The Wild Sax Band",
-  #   "listener_image_link": "https://images.unsplash.com/photo-1558369981-f9ca78462e61?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=794&q=80",
-  #   "start_time": "2035-04-15T20:00:00.000Z"
-  # }]
-  data_list = []
-  shows  = Show.query.all()
-  for show in shows:
-    data_dict = {}
-    data_dict["Forum_id"] = show.Forum_id
-    data_dict["Forum_name"] = show.Forum.name
-    data_dict["listener_id"] = show.listener_id
-    data_dict["listener_name"] = show.listener.name
-    data_dict["listener_image_link"] = show.listener.image_link
-    data_dict["start_time"] = str(show.start_time)
-    data_list.append(data_dict)
-  return render_template('pages/shows.html', shows=data_list)
-
-@app.route('/shows/create')
-def create_shows():
-  # renders form. do not touch.
-  form = ShowForm()
-  return render_template('forms/new_show.html', form=form)
-
-@app.route('/shows/create', methods=['POST'])
-def create_show_submission():
-  # called to create new shows in the db, upon submitting new show listing form
-  # DONE: insert form data as a new Show record in the db, instead
-  print("show's create", request.form)
-  form = ShowForm()
-  show =  Show(
-    listener_id = form.listener_id.data,
-    Forum_id = form.Forum_id.data,
-    start_time = form.start_time.data
-    )
-  # show =  Show(
-  #   listener_id = request.form['listener_id'], 
-  #   Forum_id = request.form['Forum_id'],
-  #   start_time = request.form['start_time'],
-  #   )
-  db.session.add(show)
-  # TODO?: modify data to be the data object returned from db insertion?
-  # on successful db insert, flash success
-  try:
-    db.session.commit()
-    flash('Show was successfully listed!')
-  except Exception as e:  
-  # # DONE: on unsuccessful db insert, flash an error instead.
-  # # e.g., flash('An error occurred. listener ' + data.name + ' could not be listed.')
-  # # see: http://flask.pocoo.org/docs/1.0/patterns/flashing/  
-    flash('An error occurred. Show could not be listed.') # did not work when the seeking_talent is y.
-    db.session.rollback()  
-  return render_template('pages/home.html')
-
 #  chat
 #  ----------------------------------------------------------------
-@app.route('/chat', methods = ['GET','POST'])
+
+@app.route('/listeners/4/chat', methods = ['GET','POST'])
 def chat():
   session['username'] = 'test_username'
   session['room'] = 'test_room'
   return render_template('pages/chat.html', session = session)
 
-@socketio.on('join', namespace='/chat')
+@socketio.on('join', namespace='/listeners/<int:listener_id>/chat')
 def join(message):
     room = session.get('room')
     join_room(room)
     emit('status', {'msg':  session.get('username') + ' has entered the room.'}, room=room)
 
 
-@socketio.on('text', namespace='/chat')
+@socketio.on('text', namespace='/listeners/<int:listener_id>/chat')
 def text(message):
     room = session.get('room')
     emit('message', {'msg': session.get('username') + ' : ' + message['msg']}, room=room)
 
 
-@socketio.on('left', namespace='/chat')
+@socketio.on('left', namespace='/listeners/<int:listener_id>/chat')
 def left(message):
     room = session.get('room')
     username = session.get('username')
