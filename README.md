@@ -78,7 +78,7 @@ pip install Flask-Migrate
 ### :round_pushpin: Setup
 1. **Download the project locally**
 ```
-git clone https://github.com/Capstone-AcadeMeProject/AcadeMe
+git clone https://github.com/TheAMTeam/AcadeMe
 cd AcadeMe
 ```
 
