@@ -56,7 +56,7 @@ class Forum(db.Model):
     title = db.Column(db.String)
     look_for_counselor = db.Column(db.Boolean) # checkbox
     description = db.Column(db.String(500))
-    listeners = db.Column(db.String, db.ForeignKey('listener.id'), nullable=False)
+    # listeners = db.Column(db.String, db.ForeignKey('listener.id'), nullable=False)
     # TODO: QA.
    
 
@@ -65,11 +65,11 @@ class Listener(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String)
     topic = db.Column(db.String(120))
-    state = db.Column(db.String(120))
+    # state = db.Column(db.String(120))
     phone = db.Column(db.String(120))
-    genres = db.Column(db.String(120)) # list. no type of list
-    image_link = db.Column(db.String(500))
-    website_link = db.Column(db.String(120))
+    # genres = db.Column(db.String(120)) # list. no type of list
+    # image_link = db.Column(db.String(500))
+    # website_link = db.Column(db.String(120))
     description = db.Column(db.String(500))
     # forum = db.relationship("Show", backref = db.backref("listener", lazy = True))
     # forum = db.relationship("Forum")
