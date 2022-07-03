@@ -605,6 +605,12 @@ def create_listener_submission():
  
   return render_template('pages/home.html')
 
+# call
+@app.route('/listeners/<int:listener_id>/call')
+def call(listener_id):
+  print("callllll")
+  return render_template('pages/call.html')
+
 
 #  chat
 #  ----------------------------------------------------------------
